@@ -8,31 +8,62 @@ import {
 } from "react-native";
 import React from "react";
 import ScreenWrapper from "../components/screenWrapper";
+import EmptyList from "../components/emptyList";
+import { useNavigation } from "@react-navigation/native";
 
 const items = [
   {
     id: 1,
     place: "Ranchi",
     country: "india",
+    image: require("../../assets/images/travel1.png"),
   },
   {
     id: 2,
     place: "Ranchi",
     country: "india",
+    image: require("../../assets/images/travel2.jpg"),
   },
   {
     id: 3,
     place: "Ranchi",
     country: "india",
+    image: require("../../assets/images/travel3.jpeg"),
   },
   {
     id: 4,
     place: "Ranchi",
     country: "india",
+    image: require("../../assets/images/travel4.jpeg"),
+  },
+  {
+    id: 5,
+    place: "Ranchi",
+    country: "india",
+    image: require("../../assets/images/travel6.jpg"),
+  },
+  {
+    id: 6,
+    place: "Ranchi",
+    country: "india",
+    image: require("../../assets/images/travel7.jpg"),
+  },
+  {
+    id: 7,
+    place: "Ranchi",
+    country: "india",
+    image: require("../../assets/images/travel8.png"),
+  },
+  {
+    id: 8,
+    place: "Ranchi",
+    country: "india",
+    image: require("../../assets/images/travel9.png"),
   },
 ];
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+  const navigation= useNavigation()
   return (
     <ScreenWrapper className="flex-1">
       <View className="flex-row justify-between items-center p-4">
@@ -54,7 +85,7 @@ export default function HomeScreen({ navigation }) {
       <View className="px-4 space-y-3">
         <View className="flex-row justify-between items-center">
           <Text className="font-bold text-xl">Recent Trip</Text>
-          <TouchableOpacity className="p-2 px-3 bg-white rounded-full">
+          <TouchableOpacity onPress={()=> navigation.navigate("AddTrip")} className="p-2 px-3 bg-white rounded-full">
             <Text>Add Trip</Text>
           </TouchableOpacity>
         </View>
@@ -63,6 +94,7 @@ export default function HomeScreen({ navigation }) {
             data={items}
             numColumns={2}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={<EmptyList message={"You have not recorder trip yet"}/>}
             keyExtractor={(item) => item.id}
             columnWrapperStyle={{
               justifyContent: "space-between",
@@ -73,10 +105,10 @@ export default function HomeScreen({ navigation }) {
                 <TouchableOpacity className="bg-white rounded-2xl shadow-sm mb-3 p-3">
                   <View>
                     <Image
-                      source={require("../../assets/images/travel1.png")}
+                      source={item.image}
                       className="w-36 h-36 mb-2"
                     />
-                    <Text className="font-bold"> {item.place}</Text>
+                    <Text className="font-bold">{item.place}</Text>
                     <Text className="text-xs">{item.country}</Text>
                   </View>
                 </TouchableOpacity>
