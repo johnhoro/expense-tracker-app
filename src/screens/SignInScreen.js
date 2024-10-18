@@ -3,16 +3,21 @@ import React, { useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
 import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  const handleSignIn = () => {
+  const handleSignIn = async() => {
     if (email && password) {
-      navigation.goBack()
-      navigation.navigate("Home");
+      try {
+         await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
     } else {
       // show error
     }
@@ -36,24 +41,35 @@ export default function SignInScreen() {
             />
           </View>
           <View className="space-y-2 mx-2">
-            <Text className="text-xl font-bold" >Email</Text>
-            <TextInput value={email} onChangeText={value=> setEmail(value)} className="p-4 bg-white rounded-full" />
+            <Text className="text-xl font-bold">Email</Text>
+            <TextInput
+              value={email}
+              onChangeText={(value) => setEmail(value)}
+              className="p-4 bg-white rounded-full"
+            />
             <Text className="text-xl font-bold">Password</Text>
-            <TextInput value={password} onChangeText={value=> setPassword(value)} className="bg-white rounded-full p-4"/>
-              <TouchableOpacity>
-                <Text className="text-right">
-                  Forget Password?
-                </Text>
-              </TouchableOpacity>
+            <TextInput
+              value={password}
+              onChangeText={(value) => setPassword(value)}
+              className="bg-white rounded-full p-4"
+            />
+            <TouchableOpacity>
+              <Text className="text-right">Forget Password?</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
         <View>
-         <TouchableOpacity onPress={handleSignIn} className="my-6 rounded-full bg-green-500 p-4">
-          <Text className="text-white text-center text-lg font-bold">Sign In</Text>
-         </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleSignIn}
+            className="my-6 rounded-full bg-green-500 p-4"
+          >
+            <Text className="text-white text-center text-lg font-bold">
+              Sign In
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </ScreenWrapper> 
+    </ScreenWrapper>
   );
 }

@@ -10,6 +10,10 @@ import React from "react";
 import ScreenWrapper from "../components/screenWrapper";
 import EmptyList from "../components/emptyList";
 import { useNavigation } from "@react-navigation/native";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/user";
 
 const items = [
   {
@@ -64,11 +68,17 @@ const items = [
 
 export default function HomeScreen() {
   const navigation= useNavigation()
+  const dispatch= useDispatch()
+
+const handleLogout=async()=>{
+  await signOut(auth)
+}
+
   return (
     <ScreenWrapper className="flex-1">
       <View className="flex-row justify-between items-center p-4">
         <Text className="text-3xl font-bold shadow-sm">Expense Tracker</Text>
-        <TouchableOpacity className="p-2 px-3 bg-white rounded-full">
+        <TouchableOpacity onPress={handleLogout} className="p-2 px-3 bg-white rounded-full">
           <Text>Logout</Text>
         </TouchableOpacity>
         {/* <Button
