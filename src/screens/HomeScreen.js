@@ -143,9 +143,8 @@ const handleLogout=async()=>{
             }}
             className="mx-1"
             renderItem={({ item, i }) => {
-              console.log("image", randomImage())
               return (
-                <TouchableOpacity className="bg-white rounded-2xl shadow-sm mb-3 p-3">
+                <TouchableOpacity onPress={()=> navigation.navigate("AddExpense", {...item})} className="bg-white rounded-2xl shadow-sm mb-3 p-3">
                   <View>
                     <Image
                       source={randomImage()}
