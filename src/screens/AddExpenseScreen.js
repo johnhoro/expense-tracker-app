@@ -62,7 +62,7 @@ export default function AddExpenseScreen(props) {
 
           <View className="flex-row justify-center my-3 mt-5">
             <Image
-              source={require("../../assets/images/signin.jpg")}
+              source={require("../../assets/images/add-expense.png")}
               className="w-72 h-72"
             />
           </View>

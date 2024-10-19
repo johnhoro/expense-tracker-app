@@ -47,7 +47,7 @@ export default function AddTripScreen() {
 
           <View className="flex-row justify-center my-3 mt-5">
             <Image
-              source={require("../../assets/images/travel10.png")}
+              source={require("../../assets/images/addtrip1.jpg")}
               className="w-72 h-72"
             />
           </View>
