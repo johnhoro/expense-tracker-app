@@ -20,3 +20,13 @@ export function randomImage(){
     let random= Math.floor(Math.random()*(max-min+1)) +min;
     return images[random]
 }
+  // Function to generate sober (pastel/muted) colors
+export const getSoberColor = () => {
+    const baseColor = 180; // Base value to keep the colors light (between 150 and 255)
+    const red = Math.floor(Math.random() * 56) + baseColor; // Limit range to pastel colors
+    const green = Math.floor(Math.random() * 56) + baseColor;
+    const blue = Math.floor(Math.random() * 56) + baseColor;
+    
+    return `rgb(${red}, ${green}, ${blue})`;
+  };
+  

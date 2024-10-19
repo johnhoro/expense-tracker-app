@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Button,
   TouchableOpacity,
   Image,
   FlatList,
@@ -10,73 +9,13 @@ import React, { useEffect, useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
 import EmptyList from "../components/emptyList";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth, tripRef } from "../config/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../redux/slices/user";
 import { getDocs, query, where } from "firebase/firestore";
 import { randomImage } from "../constants/utils";
 
-const items = [
-  {
-    id: 1,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel1.png"),
-  },
-  {
-    id: 2,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel2.jpg"),
-  },
-  {
-    id: 3,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel3.jpeg"),
-  },
-  {
-    id: 4,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel4.jpeg"),
-  },
-  {
-    id: 5,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel6.jpg"),
-  },
-  {
-    id: 6,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel7.jpg"),
-  },
-  {
-    id: 7,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel8.png"),
-  },
-  {
-    id: 8,
-    place: "Ranchi",
-    country: "india",
-    image: require("../../assets/images/travel9.png"),
-  },
-];
-const imageCollection={
-  1: require("../../assets/images/travel1.png"),
-  2: require("../../assets/images/travel2.jpg"),
-  3: require("../../assets/images/travel3.jpeg"),
-  4: require("../../assets/images/travel4.jpeg"),
-  5: require("../../assets/images/travel6.jpg"),
-  6: require("../../assets/images/travel7.jpg"),
-  7: require("../../assets/images/travel8.png"),
-  8: require("../../assets/images/travel9.png")
-}
+
 
 
 export default function HomeScreen() {
@@ -144,7 +83,7 @@ const handleLogout=async()=>{
             className="mx-1"
             renderItem={({ item, i }) => {
               return (
-                <TouchableOpacity onPress={()=> navigation.navigate("AddExpense", {...item})} className="bg-white rounded-2xl shadow-sm mb-3 p-3">
+                <TouchableOpacity onPress={()=> navigation.navigate("TripExpense", {...item})} className="bg-white rounded-2xl shadow-sm mb-3 p-3">
                   <View>
                     <Image
                       source={randomImage()}

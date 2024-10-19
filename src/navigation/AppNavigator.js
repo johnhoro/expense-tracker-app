@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { setUser } from "../redux/slices/user";
+import TripExpenseScreen from "../screens/TripExpenseScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,11 @@ export default function AppNavigator() {
             options={{ headerShown: false }}
             name="AddExpense"
             component={AddExpenseScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="TripExpense"
+            component={TripExpenseScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
