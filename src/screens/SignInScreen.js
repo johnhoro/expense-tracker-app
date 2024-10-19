@@ -5,21 +5,30 @@ import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/loading";
+import { setUserLoading } from "../redux/slices/user";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const {userLoading}= useSelector(state=> state.user)
+  const dispatch=useDispatch();
 
   const handleSignIn = async() => {
     if (email && password) {
       try {
-         await signInWithEmailAndPassword(auth, email, password);
+        dispatch(setUserLoading(true))
+        await signInWithEmailAndPassword(auth, email, password);
+        dispatch(setUserLoading(false))
       } catch (error) {
-        setErrorMessage(error.message);
+        dispatch(setUserLoading(false))
       }
     } else {
       // show error
+      dispatch(setUserLoading(false))
+      console.log("error")
     }
   };
   return (
@@ -36,7 +45,7 @@ export default function SignInScreen() {
 
           <View className="flex-row justify-center my-3 mt-5">
             <Image
-              source={require("../../assets/images/travel10.png")}
+              source={require("../../assets/images/signin.jpg")}
               className="w-72 h-72"
             />
           </View>
@@ -60,7 +69,10 @@ export default function SignInScreen() {
         </View>
 
         <View>
-          <TouchableOpacity
+          {userLoading ? (
+            <Loading/>
+          ): (
+            <TouchableOpacity
             onPress={handleSignIn}
             className="my-6 rounded-full bg-green-500 p-4"
           >
@@ -68,6 +80,8 @@ export default function SignInScreen() {
               Sign In
             </Text>
           </TouchableOpacity>
+          )}
+         
         </View>
       </View>
     </ScreenWrapper>

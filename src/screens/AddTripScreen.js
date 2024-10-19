@@ -3,15 +3,32 @@ import React, { useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
 import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native";
+import Loading from "../components/loading";
+import { useSelector } from "react-redux";
+import { addDoc } from "firebase/firestore";
+import { tripRef } from "../config/firebase";
 
 export default function AddTripScreen() {
   const [country, setCountry] = useState("");
   const [place, setPlace] = useState("");
   const navigation = useNavigation();
+  const [loading, setLoading]= useState(false);
+  const {user}= useSelector(state=> state.user);
 
-  const handleAddTrip = () => {
+  const handleAddTrip = async() => {
     if (country && place) {
       navigation.navigate("Home");
+      setLoading(true);
+      let doc= await addDoc(tripRef, {
+        place,
+        country,
+        userId:user.uid
+      })
+      setLoading(false);
+      if(doc && doc.id){
+        navigation.goBack();
+      }
+
     } else {
       // show error
     }
@@ -43,9 +60,14 @@ export default function AddTripScreen() {
         </View>
 
         <View>
-         <TouchableOpacity onPress={handleAddTrip} className="my-6 rounded-full bg-green-500 p-4">
-          <Text className="text-white text-center text-lg font-bold">Add Trip</Text>
-         </TouchableOpacity>
+          {loading? (
+            <Loading/>
+          ): (
+            <TouchableOpacity onPress={handleAddTrip} className="my-6 rounded-full bg-green-500 p-4">
+            <Text className="text-white text-center text-lg font-bold">Add Trip</Text>
+           </TouchableOpacity>
+          )}
+       
         </View>
       </View>
     </ScreenWrapper> 

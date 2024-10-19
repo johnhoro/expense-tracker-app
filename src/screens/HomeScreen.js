@@ -6,14 +6,16 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
 import EmptyList from "../components/emptyList";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
-import { useDispatch } from "react-redux";
+import { auth, tripRef } from "../config/firebase";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/slices/user";
+import { getDocs, query, where } from "firebase/firestore";
+import { randomImage } from "../constants/utils";
 
 const items = [
   {
@@ -65,10 +67,40 @@ const items = [
     image: require("../../assets/images/travel9.png"),
   },
 ];
+const imageCollection={
+  1: require("../../assets/images/travel1.png"),
+  2: require("../../assets/images/travel2.jpg"),
+  3: require("../../assets/images/travel3.jpeg"),
+  4: require("../../assets/images/travel4.jpeg"),
+  5: require("../../assets/images/travel6.jpg"),
+  6: require("../../assets/images/travel7.jpg"),
+  7: require("../../assets/images/travel8.png"),
+  8: require("../../assets/images/travel9.png")
+}
+
 
 export default function HomeScreen() {
   const navigation= useNavigation()
   const dispatch= useDispatch()
+  const {user}= useSelector(state=> state.user);
+  const [trips, setTrips]= useState([]);
+  const isFocused= useIsFocused()
+
+const fetchTrips=async()=>{
+  const q= query(tripRef, where("userId", "==", user.uid));
+  const querySnapshot= await getDocs(q);
+  let data=[];
+  querySnapshot.forEach((doc,i)=>{
+    // console.log(doc, "dayta");
+    data.push({...doc.data(), id:doc.id});
+  })
+  setTrips(data);
+
+}
+
+useEffect(()=>{
+  fetchTrips();
+},[isFocused])
 
 const handleLogout=async()=>{
   await signOut(auth)
@@ -101,7 +133,7 @@ const handleLogout=async()=>{
         </View>
         <View style={{height: 430}}>
           <FlatList
-            data={items}
+            data={trips}
             numColumns={2}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={<EmptyList message={"You have not recorder trip yet"}/>}
@@ -110,12 +142,13 @@ const handleLogout=async()=>{
               justifyContent: "space-between",
             }}
             className="mx-1"
-            renderItem={({ item }) => {
+            renderItem={({ item, i }) => {
+              console.log("image", randomImage())
               return (
                 <TouchableOpacity className="bg-white rounded-2xl shadow-sm mb-3 p-3">
                   <View>
                     <Image
-                      source={item.image}
+                      source={randomImage()}
                       className="w-36 h-36 mb-2"
                     />
                     <Text className="font-bold">{item.place}</Text>

@@ -5,24 +5,25 @@ import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native"
 import { auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserLoading } from "../redux/slices/user";
+import Loading from "../components/loading";
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation();
-  const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+const {userLoading}= useSelector(state=> state.user);
+const dispatch= useDispatch();
 
     // Sign up user with email and password
     const handleSignUp = async () => {
       if(email && password){
-        try {
           console.log("call", email, password)
+          dispatch(setUserLoading(true))
           await createUserWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-          setErrorMessage(error.message);
-        }
+          dispatch(setUserLoading(false))
       }else {
+        dispatch(setUserLoading(false))
         console.log("error")
       }
     };
@@ -40,7 +41,7 @@ export default function SignUpScreen() {
 
           <View className="flex-row justify-center my-3 mt-5">
             <Image
-              source={require("../../assets/images/travel10.png")}
+              source={require("../../assets/images/signup.jpg")}
               className="w-72 h-72"
             />
           </View>
@@ -53,9 +54,13 @@ export default function SignUpScreen() {
         </View>
 
         <View>
-         <TouchableOpacity onPress={handleSignUp} className="my-6 rounded-full bg-green-500 p-4">
-          <Text className="text-white text-center text-lg font-bold">Sign Up</Text>
-         </TouchableOpacity>
+          {userLoading? (
+            <Loading/>
+          ): (
+            <TouchableOpacity onPress={handleSignUp} className="my-6 rounded-full bg-green-500 p-4">
+            <Text className="text-white text-center text-lg font-bold">Sign Up</Text>
+           </TouchableOpacity>
+          )}
         </View>
       </View>
     </ScreenWrapper> 
