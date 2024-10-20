@@ -30,7 +30,6 @@ const fetchTrips=async()=>{
   const querySnapshot= await getDocs(q);
   let data=[];
   querySnapshot.forEach((doc,i)=>{
-    // console.log(doc, "dayta");
     data.push({...doc.data(), id:doc.id});
   })
   setTrips(data);
@@ -81,7 +80,7 @@ const handleLogout=async()=>{
               justifyContent: "space-between",
             }}
             className="mx-1"
-            renderItem={({ item, i }) => {
+            renderItem={({ item }) => {
               return (
                 <TouchableOpacity onPress={()=> navigation.navigate("TripExpense", {...item})} className="bg-white rounded-2xl shadow-sm mb-3 p-3">
                   <View>

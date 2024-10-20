@@ -19,18 +19,16 @@ export default function TripExpenseScreen(props) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [expenses, setExpenses] = useState([]);
-  console.log(props, "Props");
+
   const fetchExpense = async () => {
     const q = query(expensesRef, where("tripId", "==", id));
     const querySnapshot = await getDocs(q);
     let data = [];
     querySnapshot.forEach((doc, i) => {
-      // console.log(doc, "dayta");
       data.push({ ...doc.data(), id: doc.id });
     });
     setExpenses(data);
   };
-  console.log(expenses, "expense");
   useEffect(() => {
     fetchExpense();
   }, [isFocused]);
@@ -40,11 +38,11 @@ export default function TripExpenseScreen(props) {
       <View className="flex justify-between h-full mx-4">
         <View>
           <View className="relative mt-5">
-            <View className="absolute top-0 left-0">
-              <BackButton />
-            </View>
             <Text className="text-xl font-bold text-center">{place}</Text>
             <Text className="text-center">{country}</Text>
+            <TouchableOpacity onPress={()=> navigation.navigate("Home")} className="absolute left-0 top-0">
+                <Text className="text-blue-600 text-lg">Back</Text>
+              </TouchableOpacity>
           </View>
           <View className="flex-row justify-center my-3 mt-5">
             <Image

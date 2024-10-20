@@ -10,10 +10,10 @@ export default function BackButton() {
   return (
         <Button
           title="Back"
-          onPress={() => navigation.navigate('Home')}
+          onPress={handleBackButton}
         /> 
     // <TouchableOpacity onPress={handleBackButton}>
-    //    <Text>Back button</Text>
+    //    <Text>Back</Text>
     // </TouchableOpacity>
   )
 }

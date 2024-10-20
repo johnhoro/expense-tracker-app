@@ -18,7 +18,6 @@ const dispatch= useDispatch();
     // Sign up user with email and password
     const handleSignUp = async () => {
       if(email && password){
-          console.log("call", email, password)
           dispatch(setUserLoading(true))
           await createUserWithEmailAndPassword(auth, email, password);
           dispatch(setUserLoading(false))

@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
@@ -24,6 +25,9 @@ export default function AddExpenseScreen(props) {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const category = ["Food", "Shopping", "Movie", "Travel", "Others"];
+  function showToast() {
+    ToastAndroid.show('Please add the fields', ToastAndroid.SHORT);
+  }
 
   const handleAddExpense = async () => {
     if (expenseFor && expenseAmount && expenseCategory) {
@@ -32,12 +36,12 @@ export default function AddExpenseScreen(props) {
         expenseFor,
         expenseAmount,
         expenseCategory,
-        // tripId:id,
+        tripId:id,
       });
-      navigation.navigate("TripExpense");
       setLoading(false);
-      if (doc && doc.id) navigation.navigate("TripExpense");
+      if (doc && doc.id) navigation.goBack();
     } else {
+      showToast()
       navigation.navigate("TripExpense");
       // show error
       setLoading(false);
@@ -52,14 +56,12 @@ export default function AddExpenseScreen(props) {
     <ScreenWrapper>
       <View className="flex justify-between h-full mx-4">
         <View>
-          <View className="relative mt-5">
-            <View className="absolute top-0 left-0">
-              <BackButton />
-            </View>
-
+          <View className="relative mt-5 items-center">
+              <TouchableOpacity onPress={()=> navigation.goBack()} className="absolute left-0 top-0">
+                <Text className="text-blue-600 text-lg">Back</Text>
+              </TouchableOpacity>
             <Text className="text-xl font-bold text-center">Add Expense</Text>
           </View>
-
           <View className="flex-row justify-center my-3 mt-5">
             <Image
               source={require("../../assets/images/add-expense.png")}
