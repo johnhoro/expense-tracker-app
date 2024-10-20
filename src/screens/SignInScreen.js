@@ -15,6 +15,7 @@ export default function SignInScreen() {
   const navigation = useNavigation();
   const {userLoading}= useSelector(state=> state.user)
   const dispatch=useDispatch();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignIn = async() => {
     if (email && password) {
@@ -27,6 +28,7 @@ export default function SignInScreen() {
       }
     } else {
       // show error
+      setErrorMessage('Email and Password field cannot be empty.');
       dispatch(setUserLoading(false))
       console.log("error")
     }
@@ -36,11 +38,12 @@ export default function SignInScreen() {
       <View className="flex justify-between h-full mx-4">
         <View>
           <View className="relative mt-5">
-            <View className="absolute top-0 left-0">
-              <BackButton />
-            </View>
+            
 
             <Text className="text-xl font-bold text-center">Sign In</Text>
+            <TouchableOpacity onPress={()=> navigation.goBack()} className="absolute left-0 top-0">
+                <Text className="text-blue-600 text-lg">Back</Text>
+              </TouchableOpacity>
           </View>
 
           <View className="flex-row justify-center my-3 mt-5">
@@ -69,6 +72,7 @@ export default function SignInScreen() {
         </View>
 
         <View>
+        {errorMessage ? <Text className="text-sm text-red-600">{errorMessage}</Text> : null}
           {userLoading ? (
             <Loading/>
           ): (

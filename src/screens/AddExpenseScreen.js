@@ -5,11 +5,9 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import ScreenWrapper from "../components/screenWrapper";
-import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native";
 import { expensesRef } from "../config/firebase";
 import Loading from "../components/loading";
@@ -25,9 +23,7 @@ export default function AddExpenseScreen(props) {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const category = ["Food", "Shopping", "Movie", "Travel", "Others"];
-  function showToast() {
-    ToastAndroid.show('Please add the fields', ToastAndroid.SHORT);
-  }
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleAddExpense = async () => {
     if (expenseFor && expenseAmount && expenseCategory) {
@@ -41,8 +37,7 @@ export default function AddExpenseScreen(props) {
       setLoading(false);
       if (doc && doc.id) navigation.goBack();
     } else {
-      showToast()
-      navigation.navigate("TripExpense");
+      setErrorMessage('Please enter all the fields.');
       // show error
       setLoading(false);
       console.log("error");
@@ -82,8 +77,8 @@ export default function AddExpenseScreen(props) {
               className="bg-white rounded-full p-4"
             />
           </View>
-          <View className="space-y-2 mx-2 mt-2">
-            <Text className="text-xl font-bold">Category</Text>
+          <View className="mx-2 mt-2">
+            <Text className="text-xl font-bold mb-1">Category</Text>
             <FlatList
               data={category}
               numColumns={4}
@@ -100,7 +95,7 @@ export default function AddExpenseScreen(props) {
                       backgroundColor: expenseCategory === item ? getSoberColor() : "white", // Apply the random background color here
                     }}
                     onPress={() => handleCategory(item)}
-                    className="rounded-2xl shadow-sm mb-3 p-3 mr-4"
+                    className="rounded-2xl shadow-sm mb-3 p-[10px] mr-4"
                   >
                     <View>
                       <Text className="font-bold">{item}</Text>
@@ -111,8 +106,8 @@ export default function AddExpenseScreen(props) {
             />
           </View>
         </View>
-
         <View>
+        {errorMessage ? <Text className="text-sm text-red-600">{errorMessage}</Text> : null}
           {loading ? (
             <Loading />
           ) : (

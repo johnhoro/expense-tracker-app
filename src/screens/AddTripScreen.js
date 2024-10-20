@@ -14,6 +14,7 @@ export default function AddTripScreen() {
   const navigation = useNavigation();
   const [loading, setLoading]= useState(false);
   const {user}= useSelector(state=> state.user);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleAddTrip = async() => {
     if (country && place) {
@@ -31,6 +32,7 @@ export default function AddTripScreen() {
 
     } else {
       // show error
+      setErrorMessage('Please enter all the fields.');
     }
   };
   return (
@@ -59,6 +61,7 @@ export default function AddTripScreen() {
         </View>
 
         <View>
+        {errorMessage ? <Text className="text-sm text-red-600">{errorMessage}</Text> : null}
           {loading? (
             <Loading/>
           ): (
