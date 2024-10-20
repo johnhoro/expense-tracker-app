@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/budget.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.johnhoroexpo.ExpenseTracker"
     },
     "web": {
       "favicon": "./assets/budget.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "94b574a6-41bb-445a-a4ff-8e2aef63e36a"
+      }
     }
   }
 }
