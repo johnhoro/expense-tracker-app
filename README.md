@@ -29,3 +29,4 @@ Download the latest version of the app for Android from the link below:
 
 Watch a demo of the app UI:
 
+[Demo Video](./assets/video/expense-tracker-demo.mp4)
